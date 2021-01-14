@@ -35,7 +35,7 @@
 
 #define NInputSets 8
 
-#define KFUseTotalChi2
+#define KF_AccumulateChi2Upstream
 
 #include <Vc/Vc>
 #include <Vc/version.h>
