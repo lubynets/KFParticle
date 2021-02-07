@@ -686,6 +686,7 @@ void KFParticleBaseSIMD::AddDaughterWithEnergyFit( const KFParticleBaseSIMD &Dau
 #ifdef KF_AccumulateChi2Upstream
     fChi2 += Daughter.GetChi2();
     fNDF += Daughter.GetNDF();
+    std::cout << "no-fit Daughter.GetNDF() = " << Daughter.GetNDF()[0] << "\n";
 #endif
   }
 }
@@ -922,6 +923,7 @@ void KFParticleBaseSIMD::AddDaughterWithEnergyFitMC( const KFParticleBaseSIMD &D
 #ifdef KF_AccumulateChi2Upstream
     fChi2 += Daughter.GetChi2();
     fNDF += Daughter.GetNDF();
+    std::cout << "is-fit Daughter.GetNDF() = " << Daughter.GetNDF()[0] << "\n";
 #endif
   }
 }

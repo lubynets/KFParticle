@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
 
 project(KFParticleLibrary)
 
+set(PROJECT_VERSION 1.0)
+
 macro(add_target_property _target _prop _value)
   get_target_property(_oldprop "${_target}" ${_prop})
   if(NOT _oldprop)
@@ -23,7 +25,7 @@ endif ()
 
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS} ${ROOTSYS})
 
-set(FIXTARGET FALSE CACHE BOOL "Compile for fix target geometry.")
+set(FIXTARGET TRUE CACHE BOOL "Compile for fix target geometry.")
 
 find_package(ROOT REQUIRED COMPONENTS Core Hist Matrix Physics EG Gpad Graf Graf3d RIO MathCore)
 If(DEFINED Vc_INCLUDE_DIR AND Vc_LIBRARIES)
@@ -41,6 +43,8 @@ include(${ROOT_USE_FILE})
 set(CMAKE_INCLUDE_DIRECTORIES_BEFORE ON)
 Include_Directories( ${CMAKE_SOURCE_DIR} ${Vc_INCLUDE_DIR} ${INCLUDE_DIRECTORIES} )
 set(CMAKE_INCLUDE_DIRECTORIES_BEFORE OFF)
+
+include(CMakePackageConfigHelpers)
 
 set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
@@ -136,6 +140,51 @@ Set(NODICT_HEADERS
   KFParticlePerformance/KFMCTrack.h
   KFParticlePerformance/KFPartMatch.h
 )
+
+write_basic_package_version_file(
+       "${CMAKE_CURRENT_BINARY_DIR}/KFParticleMain/KFParticleConfigVersion.cmake"
+       VERSION ${PROJECT_VERSION}
+       COMPATIBILITY AnyNewerVersion
+)
+
+install(TARGETS KFParticle EXPORT KFParticleTargets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+        )
+
+export(EXPORT KFParticleTargets
+       FILE "${CMAKE_CURRENT_BINARY_DIR}/KFParticleMain/KFParticleTargets.cmake")
+
+message(STATUS "KFParticleTargets: ${KFParticleTargets}")
+
+set(ConfigPackageLocation lib/cmake/KFParticle)
+
+set(KFParticle_INCLUDE_DIR "include")
+set(KFParticle_LIBRARY_DIR "lib")
+
+configure_package_config_file(
+       KFParticleConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/KFParticleMain/KFParticleConfig.cmake
+       INSTALL_DESTINATION ${ConfigPackageLocation}
+       PATH_VARS KFParticle_INCLUDE_DIR KFParticle_LIBRARY_DIR
+)
+
+install(EXPORT KFParticleTargets
+       FILE
+       KFParticleTargets.cmake
+       DESTINATION
+       ${ConfigPackageLocation}
+       )
+
+install(FILES
+       "${CMAKE_CURRENT_BINARY_DIR}/KFParticleMain/KFParticleConfig.cmake"
+       "${CMAKE_CURRENT_BINARY_DIR}/KFParticleMain/KFParticleConfigVersion.cmake"
+       DESTINATION
+       ${ConfigPackageLocation}
+       COMPONENT
+       Devel
+       )
 
 install(FILES ${HEADERS} ${NODICT_HEADERS} DESTINATION include)
 install(FILES ${CMAKE_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}KFParticle_rdict.pcm DESTINATION lib OPTIONAL)
