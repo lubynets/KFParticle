@@ -48,6 +48,8 @@ class KFParticleFinder
                      std::vector<KFParticle>& Particles, std::vector<KFParticleSIMD, KFPSimdAllocator<KFParticleSIMD> >& PrimVtx, int nPV);
 
   void ExtrapolateToPV(std::vector<KFParticle>& vParticles, KFParticleSIMD& PrimVtx);
+  
+  void SetSecondaryLambdas(std::vector<KFParticle> secLambdas) { fSecCandidates[1] = secLambdas; }
      
   inline void ConstructV0(KFPTrackVector* vTracks,
                     int iTrTypePos,

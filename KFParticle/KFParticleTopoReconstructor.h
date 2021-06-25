@@ -139,6 +139,7 @@ class KFParticleTopoReconstructor{
   
   KFParticleFinder* GetKFParticleFinder() { return fKFParticleFinder; } ///< Returns a pointer to the KFParticleFinder object.
   const KFParticleFinder* GetKFParticleFinder() const { return fKFParticleFinder; } ///< Returns a constant pointer to the KFParticleFinder object.
+  void SetKFParticleFinder(KFParticleFinder* kfparticlefinder) { fKFParticleFinder = kfparticlefinder; }
   
   void CleanPV() {
     /** Cleans vectors with primary vertex candidates and corresponding clusters by calling KFParticlePVReconstructor::CleanPV(). */
@@ -231,6 +232,9 @@ class KFParticleTopoReconstructor{
   
   /** Copy cuts from KF Particle Finder of another topology reconstructor object topo. */
   void CopyCuts(const KFParticleTopoReconstructor* topo) { fKFParticleFinder->CopyCuts(topo->fKFParticleFinder); }
+  
+  void SetSecondaryLambdas(std::vector<KFParticle> secLambdas){ fKFParticleFinder->SetSecondaryLambdas(secLambdas); }
+  
  private:
 
   void GetChiToPrimVertex(KFParticleSIMD* pv, const int nPV);

@@ -36,6 +36,7 @@
 
 #include <map>
 #include <algorithm>
+#include <iostream>
 using std::sort;
 using std::vector;
 
@@ -1719,6 +1720,7 @@ void KFTopoPerformance::FillHistos()
     multiplicities[iV].resize(KFPartEfficiencies::nParticles, 0);
   
   //fill histograms for found short-lived particles
+//   std::cout << "fTopoReconstructor->GetParticles().size() = " << fTopoReconstructor->GetParticles().size() << "\n";
   for(unsigned int iP=0; iP<fTopoReconstructor->GetParticles().size(); iP++)
   {
     int iParticle = fParteff.GetParticleIndex(fTopoReconstructor->GetParticles()[iP].GetPDG());
@@ -1731,9 +1733,12 @@ void KFTopoPerformance::FillHistos()
   
   if(fStoreMCHistograms)
   {
+//     std::cout << "\n\n\nKFTopoPerformance::fStoreMCHistograms\n\n\n";
     for(int iSet=0; iSet<KFParticleFinder::GetNSecondarySets(); iSet++)
     {
-      const std::vector<KFParticle>& SecondaryCandidates = fTopoReconstructor->GetKFParticleFinder()->GetSecondaryCandidates()[iSet];
+//       std::cout << "iSet = " << iSet << "\n";
+      const std::vector<KFParticle> SecondaryCandidates = fTopoReconstructor->GetKFParticleFinder()->GetSecondaryCandidates()[iSet];
+//       std::cout << "\n\n\n\n\t\t\t\t\t\tSecondaryCandidates.size() = " << SecondaryCandidates.size() << "\n\n\n\n\n";
       for(unsigned int iP=0; iP<SecondaryCandidates.size(); iP++)
       {
         KFParticle TempPart = SecondaryCandidates[iP];
